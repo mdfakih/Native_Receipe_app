@@ -1,38 +1,63 @@
-import { useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import IconButton from '../components/IconButton';
 import List from '../components/MealDetail/List';
 import Subtitle from '../components/MealDetail/Subtitle';
 import MealDetails from '../components/MealDetails';
 import { MEALS } from '../data/dummy-data';
+import { addFavourite, removeFavourite } from '../store/redux/favourite';
+// import { FavouritesContext } from '../store/context/favourites-context';
 
 function MealDetailScreen({ route, navigation }) {
   const mealId = route.params.mealId;
-
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  function headerButtonPressHandler() {
-    console.log('Pressed!');
+  const favouriteMealsIds = useSelector((state) => state.favouriteMeals.ids);
+  const dispatch = useDispatch();
+
+  // const favourtieMealsCtx = useContext(FavouritesContext);
+
+  const mealIsFav = favouriteMealsIds.includes(mealId);
+  // const mealIsFav = favourtieMealsCtx.ids.includes(mealId);
+
+  function changeFavouriteStatusHandler() {
+    if (mealIsFav) {
+      dispatch(removeFavourite({ id: mealId }));
+    } else {
+      dispatch(addFavourite({ id: mealId }));
+    }
   }
+
+  // function changeFavouriteStatusHandler() {
+  //   if (mealIsFav) {
+  //     favourtieMealsCtx.removeFavourite(mealId);
+  //   } else {
+  //     favourtieMealsCtx.addFavourite(mealId);
+  //   }
+  // }
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         return (
           <IconButton
-            icon="star"
-            color="white"
-            onPress={headerButtonPressHandler}
+            icon={mealIsFav ? 'heart' : 'heart-outline'}
+            color={mealIsFav ? 'red' : 'white'}
+            onPress={changeFavouriteStatusHandler}
           />
         );
       },
     });
-  }, [navigation, headerButtonPressHandler]);
+  }, [navigation, changeFavouriteStatusHandler]);
 
   return (
     <ScrollView style={styles.rootContainer}>
-      <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
+      <Image
+        style={styles.image}
+        source={{ uri: selectedMeal.imageUrl }}
+      />
       <Text style={styles.title}>{selectedMeal.title}</Text>
       <MealDetails
         duration={selectedMeal.duration}
