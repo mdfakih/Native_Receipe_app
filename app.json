@@ -2,12 +2,12 @@
   "expo": {
     "name": "Native_Receipe_app",
     "slug": "Native_Receipe_app",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/recipe-dark.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/sscreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/recipe.png",
+        "backgroundColor": "#FFFFFF00"
       },
       "package": "com.dev_code_chill"
     },
